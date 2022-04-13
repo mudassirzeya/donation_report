@@ -38,7 +38,7 @@ export default function Remark_Page(props) {
     // console.log("api", Platform.Version)
     settexterror(false)
     setIndicator(true)
-    fetch ("http://192.168.56.1/member_remark_mobile/", {
+    fetch ("https://donationreport.pythonanywhere.com/member_remark_mobile/", {
         method: "POST",
         headers: {
           'Content-Type' : 'application/json',
@@ -70,7 +70,7 @@ export default function Remark_Page(props) {
 
     const getData = () => {
         setDatatext(false);
-        fetch('http://192.168.56.1:80/member_remark_mobile/?uid='+user_id, {
+        fetch('https://donationreport.pythonanywhere.com/member_remark_mobile/?uid='+user_id, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
