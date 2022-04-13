@@ -43,7 +43,7 @@ export default function Search_Member(props) {
     settexterror(false)
     setDatatext(false)
     setIndicator(true)
-    fetch ("http://192.168.56.1/search_member_mobile/", {
+    fetch ("https://donationreport.pythonanywhere.com/search_member_mobile/", {
         method: "POST",
         headers: {
           'Content-Type' : 'application/json',
