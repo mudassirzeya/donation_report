@@ -29,7 +29,7 @@ export default function LoginScreen(props) {
     //   console.log(phone, password)
       setIndicator(true)
       settexterror(false)
-      fetch('http://192.168.56.1/user_mobile_login/', {
+      fetch('https://donationreport.pythonanywhere.com/user_mobile_login/', {
             method: 'POST',
             headers:{
                 'Content-Type' : 'application/json'
