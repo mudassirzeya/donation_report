@@ -22,15 +22,6 @@ import Contacts from 'react-native-contacts';
 export default function ProfileScreen(props) {
   console.log("prop", props)
   const item = props.foo
-  // const item = 'Mudassir zeya'
-  // console.log('image_path', 'http://192.168.56.1'+item.profile_pic)
-
-  // useEffect( async() => {
-  //   // console.log("home")
-  //   const gettoken = await AsyncStorageHelper.getItem('token-meem');
-  //   console.log("profile", gettoken)
-  //   setUsertoken(gettoken);
-  // },[]);
 
   
   const whatsappNum = (whNum) =>{
@@ -118,7 +109,7 @@ export default function ProfileScreen(props) {
                 item.profile_pic ? 
                 <Avatar.Image 
                   source={{
-                    uri: `http://192.168.56.1${item.profile_pic}`,
+                    uri: `https://donationreport.pythonanywhere.com${item.profile_pic}`,
                   }}
                   size={60}
                 /> 

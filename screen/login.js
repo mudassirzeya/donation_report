@@ -29,7 +29,7 @@ export default function LoginScreen(props) {
     //   console.log(phone, password)
       setIndicator(true)
       settexterror(false)
-      fetch('http://192.168.56.1/user_mobile_login/', {
+      fetch('https://donationreport.pythonanywhere.com/user_mobile_login/', {
             method: 'POST',
             headers:{
                 'Content-Type' : 'application/json'
@@ -38,14 +38,14 @@ export default function LoginScreen(props) {
         })
         .then(resp => resp.json())
         .then(data => {
-            // console.log('data',data.msg)
+            console.log('login data',data)
             setIndicator(false)
             if (data.msg=='failed'){
                 Alert.alert("Error", "Please enter the correct phone/password")
             }else if(data.msg == 'success'){
                 // AsyncStorageHelper.saveItem('token', data.token);
                 AsyncStorageHelper.saveItem('token-donation', data.token);
-
+                AsyncStorageHelper.saveItem('username-donation', data.username);
                 UserAction.set(data.token, dispatch);
                 // props.navigation.navigate("Home", {data});
             }else{
@@ -70,7 +70,7 @@ export default function LoginScreen(props) {
                 <View style={{flexDirection:'row',justifyContent:'center'}}>
                     <Avatar.Image 
                         source={{
-                        uri: 'https://i.ibb.co/c1LJNDm/icon-removebg-preview-4.png',
+                        uri: 'https://i.ibb.co/sPz3XW3/360-F-414665562-h1-Da2-Ojp-Lf-Mtjoh7vf-CSelw61hxzarz8.jpg',
                         }}
                         size={100}
                         />

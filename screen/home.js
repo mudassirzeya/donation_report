@@ -11,7 +11,7 @@ function Home_Page(props) {
                         <Card style={{backgroundColor:'purple', padding:10}}>
                             <View style={{flexDirection:'row', justifyContent:'space-between'}}>
                                 <Text style={{color:'white', fontSize:25, fontWeight:'bold'}}>Search for Members</Text>
-                                <IconButton icon={'arrow-right'} color={'white'} onPress={() => console.log('pressed')}/>
+                                <IconButton icon={'arrow-right'} color={'white'} onPress={() => props.navigation.navigate('Search')}/>
                             </View>
                             <View style={{paddingTop:10}}>
                                 <Text style={{color:'white', fontSize:16, fontWeight:'bold'}}>Total Member: 36000</Text>
@@ -28,6 +28,19 @@ function Home_Page(props) {
                             </View>
                             <View style={{paddingTop:10}}>
                                 <Text style={{color:'white', fontSize:16, fontWeight:'bold'}}>Total: 100000</Text>
+                            </View>
+                        </Card>
+                    </View>
+                </TouchableRipple>
+                <TouchableRipple onPress={() => props.navigation.navigate('Presentation')}>
+                    <View style={{padding:15}}>
+                        <Card style={{backgroundColor:'purple', padding:10}}>
+                            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                                <Text style={{color:'white', fontSize:25, fontWeight:'bold'}}>Presentation</Text>
+                                <IconButton icon={'arrow-right'} color={'white'} onPress={() => props.navigation.navigate('Presentation')}/>
+                            </View>
+                            <View style={{paddingTop:10}}>
+                                <Text style={{color:'white', fontSize:16, fontWeight:'bold'}}></Text>
                             </View>
                         </Card>
                     </View>

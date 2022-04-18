@@ -12,29 +12,29 @@ import {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Contacts from 'react-native-contacts';
 
-export default function ProfileScreen(props) {
-  console.log("prop", props)
-//   const item = props.foo
+export default function UserProfile(props) {
+  // console.log("prop", props)
+  const item = {'name':'Mudassir Zeya Shaikh', 'mobile_number':7506164227}
 
   return (
     <SafeAreaView style={{flex:1}}>
       <ScrollView>
-        <View style={{flex:1}}>
+        <View style={{margin:0}}>
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'row', marginTop: 15}}>
               {
                 item.profile_pic ? 
                 <Avatar.Image 
                   source={{
-                    uri: `http://192.168.56.1${item.profile_pic}`,
+                    uri: `https://donationreport.pythonanywhere.com${item.profile_pic}`,
                   }}
-                  size={60}
+                  size={70}
                 /> 
               : <Avatar.Image 
                   source={{
                     uri: `https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${item.name}`,
                   }}
-                  size={60}
+                  size={70}
                 />
               }
               <View style={{marginLeft: 20, flexShrink:1}}>
@@ -53,70 +53,18 @@ export default function ProfileScreen(props) {
               <View style={{...styles.row}}>
                 <Icon name="phone" color="#777777" size={20}/>
                 <Text style={{color:"black", marginLeft: 20}}>{item.mobile_number}</Text>
-
-                <View style={{flexDirection:'row', position:'absolute', right:0}}>
-                  <Icon name="whatsapp" color="green" size={20} onPress={() => whatsappNum(item.mobile_number)}/>
-                <Icon name="phone" color="blue" size={20} style={{marginLeft:10}} 
-                  onPress={() => Linking.openURL(`tel:${item.mobile_number}`)}/>
-                </View>
               </View> : <View/>
-            }
-
-            {
-              item.email ?
-              <TouchableRipple onPress={() => Linking.openURL(`mailto:${item.email}`)}>
-              <View style={styles.row}>
-                <Icon name="email" color="#777777" size={20}/>
-                <Text style={{color:"black", marginLeft: 20}}>{item.email}</Text>
-              </View>
-              </TouchableRipple>
-              : <View/>
-            }
-            {/* {
-              item.city || item.state ?
-              <View style={styles.row}>
-              <Icon name="map-marker-radius" color="#777777" size={20}/>
-              <Text style={{color:"black", marginLeft: 20}}>{item.state ? item.state : ''} {item.city ? `- ${item.city}`:''} 
-              {item.pin_code ? ` - ${item.pin_code}` : ''}</Text>
-              </View> :
-              <View/>
-            } */}
-            {
-              item.note ?
-              <View style={styles.row}>
-              <Icon name="note" color="#777777" size={20}/>
-              <Text style={{color:"black", marginLeft: 20}}>{item.note}</Text>
-              </View> :
-              <View/>
             }
 
           </View>
 
           <View style={styles.infoBoxWrapper}>
           </View>
-
-          <View style={styles.menuWrapper}>
-            <TouchableRipple onPress={() => shareString(item)}>
-              <View style={styles.menuItem}>
-                <Icon name="share-outline" color="#FF6347" size={25}/>
-                <Text style={styles.menuItemText}>Share this contact</Text>
-              </View>
-            </TouchableRipple>
-            <TouchableRipple onPress={() => openContactPicker(item)}>
-              <View style={styles.menuItem}>
-                <Icon name="account-check-outline" color="#FF6347" size={25}/>
-                <Text style={styles.menuItemText}>Save this contact</Text>
-              </View>
-            </TouchableRipple>
-          </View>
-          
       </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-// export default ProfileScreen;
 
 const styles = StyleSheet.create({
   container: {

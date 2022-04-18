@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, Alert,Linking, Platform, Share, Activ
 import { Button, FAB, Card, Searchbar, IconButton, TouchableRipple, Avatar, TextInput } from 'react-native-paper'
 import { AsyncStorageHelper } from "../service";
 import { useSelector } from "react-redux";
+import Moment from "moment";
 
 export default function Remark_Page(props) {
 
@@ -14,7 +15,7 @@ export default function Remark_Page(props) {
 
     const [remark, setRemark] = useState([])
     const [note, setNote] = useState("")
-    const [userToken, setUsertoken] = useState("")
+    const [users, setUsers] = useState([])
     const [loading, setLoading] = useState(true)
     const [modalVisible, setModalVisible] = useState(false);
     const [remarkError, setRemarkError] = useState(false);
@@ -38,7 +39,7 @@ export default function Remark_Page(props) {
     // console.log("api", Platform.Version)
     settexterror(false)
     setIndicator(true)
-    fetch ("http://192.168.56.1/member_remark_mobile/", {
+    fetch ("https://donationreport.pythonanywhere.com/member_remark_mobile/", {
         method: "POST",
         headers: {
           'Content-Type' : 'application/json',
@@ -70,7 +71,7 @@ export default function Remark_Page(props) {
 
     const getData = () => {
         setDatatext(false);
-        fetch('http://192.168.56.1:80/member_remark_mobile/?uid='+user_id, {
+        fetch('https://donationreport.pythonanywhere.com/member_remark_mobile/?uid='+user_id, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -100,8 +101,8 @@ export default function Remark_Page(props) {
         return(
             <Card style = {styles.cardStyle} >
                 <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-                    <Text style={{fontSize:18, color:'purple'}}>Karthick</Text>
-                    <Text style={{fontSize:15}}>Date</Text>
+                    <Text style={{fontSize:18, color:'purple'}}>Mudassir</Text>
+                    <Text style={{fontSize:15}}>{Moment(item.added_date).format('DD/MM/YYYY')}</Text>
                 </View>
                 <Text style = {{fontSize:16, color:'black'}}>{item.report_note} </Text>
             </Card>

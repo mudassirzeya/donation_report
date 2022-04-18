@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import { View, Text, StyleSheet, FlatList, Alert,Linking, Platform, Share, ActivityIndicator, SafeAreaView, Modal, ToastAndroid } from 'react-native';
-import { Button, FAB, Card, Searchbar, IconButton, TouchableRipple, Avatar, TextInput } from 'react-native-paper';
+import { Button, FAB, Card, Searchbar, IconButton, TouchableRipple, Avatar, TextInput, RadioButton } from 'react-native-paper';
 // import DateField from 'react-native-datefield';
 // import DatePicker from "react-native-datepicker";
 import DatePicker from "react-native-date-picker";
@@ -26,15 +26,25 @@ export default function Member_Donation_Page(props) {
     const [note, setNote] = useState("");
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false)
+    const [checked, setChecked] = useState("")
+    const [checkError, setCheckError] = useState(false)
 
     const user = useSelector(state => state.user);
 
     const validate_text = () => {
-      if (amount.length > 0){
-          adddonation();
-      }else{
-          settexterror(true)
-      }
+        if(checked.length > 2){
+            console.log("check: ", checked)
+            setCheckError(false)
+            if (amount.length > 0){
+                adddonation();
+            }else{
+                settexterror(true);
+            }
+
+        }else{
+            setCheckError(true);
+        }
+      
     }
 
     useEffect(() => {
@@ -47,13 +57,13 @@ export default function Member_Donation_Page(props) {
     // console.log("api", Platform.Version)
     settexterror(false)
     setIndicator(true)
-    fetch ("http://192.168.56.1/member_donation_mobile/", {
+    fetch ("https://donationreport.pythonanywhere.com/member_donation_mobile/", {
         method: "POST",
         headers: {
           'Content-Type' : 'application/json',
           'Authorization': 'Token ' + user.token
         },
-        body:JSON.stringify({body:note, uid:user_id, date:date, money:amount})
+        body:JSON.stringify({body:note, uid:user_id, date:date, money:amount, account:checked})
     })
     .then(resp => resp.json())
     .then(data => {
@@ -79,7 +89,7 @@ export default function Member_Donation_Page(props) {
 
     const getData = () => {
         setDatatext(false);
-        fetch('http://192.168.56.1:80/member_donation_mobile/?uid='+user_id, {
+        fetch('https://donationreport.pythonanywhere.com/member_donation_mobile/?uid='+user_id, {
             method: "GET",
             headers:{
                 'Content-Type': 'application/json',
@@ -147,7 +157,7 @@ export default function Member_Donation_Page(props) {
                     <View
                         style={{
                             padding:10,
-                            height: '60%',
+                            height: '65%',
                             marginTop: 'auto',
                             backgroundColor:'#DEC5F7',
                             // backgroundColor:'#EC3EE9',
@@ -158,89 +168,92 @@ export default function Member_Donation_Page(props) {
                             borderTopRightRadius:20,
             
                         }}>
-                        <View style={styles.searchSection}>
-                            <FontAwesome style={styles.searchIcon} name="rupee" size={22} color="red"/>
-                            <TextInput
-                                //   style={{backgroundColor:'#DEC5F7'}}
-                                placeholder="Amount"
-                                placeholderTextColor="#666666"
-                                autoCorrect={false}
-                                value={amount}
-                                onChangeText={text => setAmount(text)}
-                                //   mode='flat'
-                                style={styles.input2}
-                            />
-                        </View>
-                        {texterror ? 
-                        <View style={{flexDirection:'row',justifyContent:'center'}}>
-                        <Text style={{color:'#B11000', fontSize:16}}>Please Enter the Amount !!</Text>
-                        </View> : null}
+                        <View>
+                            <View style={{backgroundColor:'white'}}>
+                                <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
+                                    <View style={{flexDirection:'row', justifyContent:'space-around'}}>
+                                    <RadioButton.Item label="To Personal" value="personal"/>
+                                    <RadioButton.Item label="To Organization" value="organization"/>
+                                    </View>
+                                </RadioButton.Group>
+                                {checkError ? 
+                                <View style={{flexDirection:'row',justifyContent:'center'}}>
+                                <Text style={{color:'#B11000', fontSize:16}}>Please Select one of these options !!</Text>
+                                </View> : null}
+                            </View>
+                            <View style={styles.searchSection}>
+                                <FontAwesome style={styles.searchIcon} name="rupee" size={22} color="red"/>
+                                <TextInput
+                                    //   style={{backgroundColor:'#DEC5F7'}}
+                                    placeholder="Amount"
+                                    placeholderTextColor="#666666"
+                                    autoCorrect={false}
+                                    value={amount}
+                                    onChangeText={text => setAmount(text)}
+                                    //   mode='flat'
+                                    style={styles.input2}
+                                />
+                            </View>
+                            {texterror ? 
+                            <View style={{flexDirection:'row',justifyContent:'center', backgroundColor:'white'}}>
+                            <Text style={{color:'#B11000', fontSize:16}}>Please Enter the Amount !!</Text>
+                            </View> : null}
 
-                        <DatePicker
-                            modal
-                            open={open}
-                            date={date}
-                            onConfirm={(date) => {
-                            setOpen(false)
-                            setDate(date)
-                            }}
-                            onCancel={() => {
-                            setOpen(false)
-                            }}
-                        />
-                        
-                        <View style={styles.searchSection}>
-                            <TouchableRipple onPress={() => setOpen(true)}>
-                                <FontAwesome style={styles.searchIcon} name="calendar" size={20} color="red"/>
-                            </TouchableRipple>
-                            <TextInput
-                                placeholderTextColor="#666666"
-                                autoCorrect={false}
-                                value={Moment(date).format('DD/MM/YYYY')}
-                                onChangeText={setDate}
-                                style={styles.input2}
-                                onFocus={() => setOpen(true)}
-                                // showSoftInputOnFocus={false}
+                            <DatePicker
+                                modal
+                                open={open}
+                                date={date}
+                                onConfirm={(date) => {
+                                setOpen(false)
+                                setDate(date)
+                                }}
+                                onCancel={() => {
+                                setOpen(false)
+                                }}
                             />
+                            
+                            <View style={styles.searchSection}>
+                                <TouchableRipple onPress={() => setOpen(true)}>
+                                    <FontAwesome style={styles.searchIcon} name="calendar" size={20} color="red"/>
+                                </TouchableRipple>
+                                <TextInput
+                                    placeholderTextColor="#666666"
+                                    autoCorrect={false}
+                                    value={Moment(date).format('DD/MM/YYYY')}
+                                    onChangeText={setDate}
+                                    style={styles.input2}
+                                    onFocus={() => setOpen(true)}
+                                    // showSoftInputOnFocus={false}
+                                />
+                            </View>
+                            <View style={styles.searchSection}>
+                                <FontAwesome style={styles.searchIcon} name="pencil" size={22} color="red"/>
+                                <TextInput
+                                    //   style={{backgroundColor:'#DEC5F7'}}
+                                    placeholder="Note"
+                                    placeholderTextColor="#666666"
+                                    autoCorrect={false}
+                                    value={note}
+                                    onChangeText={text => setNote(text)}
+                                    //   mode='flat'
+                                    style={styles.input2}
+                                />
+                            </View>
+                            
+                            {indicator ? <ActivityIndicator size="large" color="blue" animating={indicator} /> : null}
+                            <Button
+                                style= {{margin:10, backgroundColor:'#1C33E5', borderRadius:10}}
+                                mode = "contained"
+                                icon={'pencil'}
+                                onPress={() => validate_text()}
+                                > Add Donation </Button>
+                            <Button
+                                style= {{margin:10, backgroundColor:'#EA423A', borderRadius:10}}
+                                mode = "contained"
+                                icon={'cancel'}
+                                onPress={() => {setModalVisible(!modalVisible)}}
+                                > Close </Button>
                         </View>
-
-                        {/* <TextInput
-                            placeholderTextColor="#666666"
-                            autoCorrect={false}
-                            value={Moment(date).format('DD/MM/YYYY')}
-                            onChangeText={setDate}
-                            style={styles.input}
-                            onFocus={() => setOpen(true)}
-                        /> */}
-                        {/* <Button onPress={() => setOpen(true)}>Click To Change Date</Button> */}
-
-                        <View style={styles.searchSection}>
-                            <FontAwesome style={styles.searchIcon} name="pencil" size={22} color="red"/>
-                            <TextInput
-                                //   style={{backgroundColor:'#DEC5F7'}}
-                                placeholder="Note"
-                                placeholderTextColor="#666666"
-                                autoCorrect={false}
-                                value={note}
-                                onChangeText={text => setNote(text)}
-                                //   mode='flat'
-                                style={styles.input2}
-                            />
-                        </View>
-                        
-                        {indicator ? <ActivityIndicator size="large" color="blue" animating={indicator} /> : null}
-                        <Button
-                            style= {{margin:10, backgroundColor:'#1C33E5', borderRadius:10}}
-                            mode = "contained"
-                            icon={'pencil'}
-                            onPress={() => validate_text()}
-                            > Add Donation </Button>
-                        <Button
-                            style= {{margin:10, backgroundColor:'#EA423A', borderRadius:10}}
-                            mode = "contained"
-                            icon={'cancel'}
-                            onPress={() => {setModalVisible(!modalVisible)}}
-                            > Close </Button>
                     </View>
                 </Modal>
                 <FAB 

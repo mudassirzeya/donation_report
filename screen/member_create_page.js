@@ -95,7 +95,7 @@ export default function Member_Create(props) {
       img_data.append('lon', map2);
       img_data.append('note', note);
 
-      fetch ("http://192.168.56.1/member_create_mobile/", {
+      fetch ("https://donationreport.pythonanywhere.com/member_create_mobile/", {
           method: "POST",
           headers: {
             // 'Content-Type' : 'application/json',
